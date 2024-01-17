@@ -72,4 +72,23 @@ public class GlobalExceptionHandler {
     	ApiResponse apiResponse=new ApiResponse(message,false);
     	return new ResponseEntity<>(apiResponse,HttpStatus.BAD_REQUEST);
     }
+    
+    @ExceptionHandler(EmailNotFoundException.class)
+    public ResponseEntity<ApiResponse> emailNotFoundExceptionHandler(EmailNotFoundException e){
+    	String message=e.getMessage();
+    	ApiResponse apiResponse= new ApiResponse(message,false);
+    	return new ResponseEntity<>(apiResponse,HttpStatus.NOT_FOUND);
+    }
+    
+    @ExceptionHandler(IllegalTokenException.class)
+    public ResponseEntity<ApiResponse> illegalTokenExceptionHandler(IllegalTokenException e){
+    	ApiResponse apiResponse=new ApiResponse(e.getMessage(),false);
+    	return new ResponseEntity<>(apiResponse,HttpStatus.UNAUTHORIZED);
+    }
+    
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<ApiResponse> apiExceptionHandler(ApiException e){
+    	ApiResponse apiResponse=new ApiResponse(e.getMessage(),false);
+    	return new ResponseEntity<>(apiResponse,HttpStatus.UNAUTHORIZED);
+    }
 }

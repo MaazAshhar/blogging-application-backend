@@ -1,18 +1,5 @@
 package com.ashhar.blogappapis.services.impl;
 
-import com.ashhar.blogappapis.entities.Role;
-import com.ashhar.blogappapis.entities.User;
-import com.ashhar.blogappapis.exceptions.*;
-import com.ashhar.blogappapis.payloads.UserDto;
-import com.ashhar.blogappapis.repositories.RoleRepo;
-import com.ashhar.blogappapis.repositories.UserRepo;
-import com.ashhar.blogappapis.services.UserService;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -20,13 +7,35 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.ashhar.blogappapis.entities.Role;
+import com.ashhar.blogappapis.entities.User;
+import com.ashhar.blogappapis.exceptions.DuplicateEmailException;
+import com.ashhar.blogappapis.exceptions.IllegalUUIDException;
+import com.ashhar.blogappapis.exceptions.ResourceNotFoundException;
+import com.ashhar.blogappapis.payloads.UserDto;
+import com.ashhar.blogappapis.payloads.UserUpdateDto;
+import com.ashhar.blogappapis.repositories.RoleRepo;
+import com.ashhar.blogappapis.repositories.UserRepo;
+import com.ashhar.blogappapis.services.UserService;
+
 @Service
 public class UserServiceImpl implements UserService {
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	
     @Autowired
-    UserRepo userRepo;
+    private UserRepo userRepo;
     
     @Autowired
-    RoleRepo roleRepo;
+    private RoleRepo roleRepo;
 
     @Autowired
     ModelMapper modelMapper;
@@ -44,6 +53,8 @@ public class UserServiceImpl implements UserService {
     		}
     	}
         User user=this.dtoToUser(userDto);
+        String hashPassword=passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashPassword);
         try{
         	user.setRoles(rolesToAdd);;
             User savedUser= userRepo.save(user);
@@ -54,7 +65,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateUser(UserDto userDto, String userId) {
+    public UserDto updateUser(UserUpdateDto userDto, String userId) {
         UUID userIds = null;
         try {
             userIds = UUID.fromString(userId);
@@ -63,12 +74,25 @@ public class UserServiceImpl implements UserService {
         }
         UUID finalUserIds = userIds;
         User user=this.userRepo.findById(userIds).orElseThrow(()->new ResourceNotFoundException("User","Id", finalUserIds));
-        user.setName(userDto.getName());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
-        user.setPhone(userDto.getPhone());
-        user.setAbout(userDto.getAbout());
-        user.setCity(userDto.getCity());
+        if(userDto.getName()!=null) {
+        	user.setName(userDto.getName());
+        }
+        if(userDto.getEmail()!=null ) {
+        	user.setEmail(userDto.getEmail());
+        }
+        if(userDto.getPassword()!=null) {
+        	String hashPassword=passwordEncoder.encode(userDto.getPassword());
+        	user.setPassword(hashPassword);
+        }
+        if(userDto.getPhone()!=null) {
+        	user.setPhone(userDto.getPhone());
+        }
+        if(userDto.getAbout()!=null ) {
+        	user.setAbout(userDto.getAbout());
+        }
+        if(userDto.getCity()!=null) {
+        	user.setCity(userDto.getCity());
+        }
         // save updated user
         User updatedUser=this.userRepo.save(user);
         return this.userToUserDto(updatedUser);

@@ -2,6 +2,7 @@ package com.ashhar.blogappapis.controllers;
 
 import com.ashhar.blogappapis.payloads.ApiResponse;
 import com.ashhar.blogappapis.payloads.UserDto;
+import com.ashhar.blogappapis.payloads.UserUpdateDto;
 import com.ashhar.blogappapis.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class UserController {
     // Put-update user;
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto,@PathVariable("userId") String uid){
+    public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserUpdateDto userDto,@PathVariable("userId") String uid){
         UserDto updatedUser=this.userService.updateUser(userDto,uid);
         //return new ResponseEntity<>(updatedUser,HttpStatus.OK);
         // another method to write above line of code;

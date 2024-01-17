@@ -23,6 +23,7 @@ public class UserDto {
     @Size(min=3,message = "name must be of min 3 chars!!")
     private String name;
     @Email
+    @NotEmpty
     private String email;
     @NotEmpty
     @Size(min=6,max = 12,message = "Password must contain min 6 chars and max 12 chars!!")
