@@ -40,6 +40,7 @@ public class SecurityConfig {
             "/swagger-resources/**", "/swagger-ui/**", "/webjars/**","/api/v1/auth/login"
 
     };
+	public static final String[] ADMIN_URLS = {"/api/users/"};
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -49,6 +50,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((request)->request
                 		.requestMatchers(PUBLIC_URLS)
                 		.permitAll()
+                		.requestMatchers(ADMIN_URLS).hasRole("ADMIN")
                 		.anyRequest()
                 		.authenticated())
                 .exceptionHandling((exceptionHandling) -> exceptionHandling

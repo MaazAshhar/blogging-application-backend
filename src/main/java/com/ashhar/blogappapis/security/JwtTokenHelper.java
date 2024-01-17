@@ -20,7 +20,7 @@ import io.jsonwebtoken.security.Keys;
 public class JwtTokenHelper {
 	private static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 	@Value("${project.jwt.secret.key}")
-	private String SECRET_KEY = "jwtTokenKey";
+	private String SECRET_KEY;
 
 	// receive username from jwt token
 	public String getUsernameFromToken(String token) {

@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ashhar.blogappapis.entities.Role;
 import com.ashhar.blogappapis.entities.User;
 import com.ashhar.blogappapis.exceptions.ApiException;
+import com.ashhar.blogappapis.exceptions.DuplicateEmailException;
 import com.ashhar.blogappapis.payloads.ApiResponse;
 import com.ashhar.blogappapis.payloads.JwtAuthRequest;
 import com.ashhar.blogappapis.payloads.JwtAuthResponse;
@@ -81,11 +83,11 @@ public class AuthController {
 	@PostMapping("/signup")
 	public ResponseEntity<ApiResponse> signup(@Valid @RequestBody UserDto userDto){
 		Set<Role> rolesToAdd=new HashSet<>();
-		if(roleRepo.existsByName("ROLES_USER")) {
-			rolesToAdd.add(roleRepo.findByName("ROLES_USER"));
+		if(roleRepo.existsByName("ROLE_USER")) {
+			rolesToAdd.add(roleRepo.findByName("ROLE_USER"));
 		}else {
 			Role role = new Role();
-			role.setName("ROLES_USER");
+			role.setName("ROLE_USER");
 			Role savedRole=roleRepo.save(role);
 			rolesToAdd.add(savedRole);
 		}
@@ -93,8 +95,12 @@ public class AuthController {
 		user.setRoles(rolesToAdd);
 		String hashPassword = passwordEncoder.encode(user.getPassword());
 		user.setPassword(hashPassword);
-		User savedUser=this.userRepo.save(user);
-		ApiResponse apiResponse=new ApiResponse("registered successfully with id: "+savedUser.getId().toString(),true);
-		return new ResponseEntity<>(apiResponse,HttpStatus.CREATED);
+		try {
+			User savedUser=this.userRepo.save(user);
+			ApiResponse apiResponse=new ApiResponse("registered successfully with id: "+savedUser.getId().toString(),true);
+			return new ResponseEntity<>(apiResponse,HttpStatus.CREATED);
+		}catch(DataIntegrityViolationException e) {
+			throw new DuplicateEmailException("User", userDto.getEmail());
+		}
 	}
 }
