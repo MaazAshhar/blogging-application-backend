@@ -3,6 +3,7 @@ package com.ashhar.blogappapis.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -36,8 +37,9 @@ public class SecurityConfig {
 	private JwtAuthenticationFilter jwtAuthenticationFilter;
 	
 	
-	public static final String[] PUBLIC_URLS = {"/api/v1/auth/**", "/v3/api-docs", "/v2/api-docs",
-            "/swagger-resources/**", "/swagger-ui/**", "/webjars/**","/api/v1/auth/login"
+	public static final String[] PUBLIC_URLS = {"/api/v1/auth/**", "/v3/api-docs", "/v3/api-docs/**", "/v2/api-docs",
+            "/swagger-resources/**", "/swagger-ui/**", "/webjars/**","/api/v1/auth/login","/swagger-ui/index.html",
+            "/swagger-ui.html"
 
     };
 	public static final String[] ADMIN_URLS = {"/api/users/"};
