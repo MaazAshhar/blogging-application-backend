@@ -1,12 +1,12 @@
 package com.ashhar.blogappapis.controllers;
 
-import com.ashhar.blogappapis.config.AppConstants;
 import com.ashhar.blogappapis.payloads.ApiResponse;
 import com.ashhar.blogappapis.payloads.ImageUploadedResponse;
 import com.ashhar.blogappapis.payloads.PostDto;
 import com.ashhar.blogappapis.payloads.PostResponse;
 import com.ashhar.blogappapis.services.FileService;
 import com.ashhar.blogappapis.services.PostService;
+import com.ashhar.blogappapis.utils.AppConstants;
 
 import jakarta.servlet.http.HttpServletResponse;
 

@@ -1,4 +1,4 @@
-package com.ashhar.blogappapis.config;
+package com.ashhar.blogappapis.utils;
 
 public class AppConstants {
 	public static final String PAGE_NUMBER="0";
