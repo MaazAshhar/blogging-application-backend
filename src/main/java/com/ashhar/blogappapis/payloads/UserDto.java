@@ -13,6 +13,7 @@ import java.util.UUID;
 
 import com.ashhar.blogappapis.entities.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 @NoArgsConstructor
@@ -42,5 +43,10 @@ public class UserDto {
     @JsonIgnore
     public String getPassword() {
     	return this.password;
+    }
+    
+    @JsonProperty
+    public void setPassword(String password) {
+    	this.password = password;
     }
 }
