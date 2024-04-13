@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import com.ashhar.blogappapis.entities.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @NoArgsConstructor
@@ -37,4 +38,9 @@ public class UserDto {
     private String city;
     
     private Set<Role> roles=new HashSet<>();
+    
+    @JsonIgnore
+    public String getPassword() {
+    	return this.password;
+    }
 }

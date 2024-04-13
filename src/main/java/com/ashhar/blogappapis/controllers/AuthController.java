@@ -91,6 +91,12 @@ public class AuthController {
 			Role savedRole=roleRepo.save(role);
 			rolesToAdd.add(savedRole);
 		}
+		userDto.setName(userDto.getName().trim());
+		userDto.setEmail(userDto.getEmail().trim());
+		userDto.setPassword(userDto.getPassword().trim());
+		userDto.setAbout(userDto.getAbout().trim());
+		userDto.setCity(userDto.getCity().trim());
+		userDto.setPhone(userDto.getPhone().trim());
 		User user=this.mapper.map(userDto, User.class);
 		user.setRoles(rolesToAdd);
 		String hashPassword = passwordEncoder.encode(user.getPassword());
