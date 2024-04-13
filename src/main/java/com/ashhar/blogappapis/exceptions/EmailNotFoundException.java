@@ -15,7 +15,7 @@ public class EmailNotFoundException extends RuntimeException{
 	private String fieldValue;
 	
 	public EmailNotFoundException(String resource,String field,String fieldValue) {
-		super(MessageFormat.format("{0} not found with {1]: {2}",resource,field,fieldValue));
+		super(MessageFormat.format("{0} not found with {1}: {2}",resource,field,fieldValue));
 		this.resource=resource;
 		this.field=field;
 		this.fieldValue=fieldValue;
