@@ -16,9 +16,9 @@ public class BlogAppApisApplication {
         
         // Add properties from .env to Spring's Environment
         Map<String,Object> env = new HashMap<>();
-        env.put("DB_URL", dotenv.get("DB_URL"));
-        env.put("DB_USERNAME", dotenv.get("DB_USERNAME"));
-        env.put("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
+        env.put("DB_URL", dotenv.get("DATABASE_URL"));
+        env.put("DB_USERNAME", dotenv.get("PGUSER"));
+        env.put("DB_PASSWORD", dotenv.get("PGPASSWORD"));
         env.put("JWT_SECRET_KEY", dotenv.get("JWT_SECRET_KEY"));
         app.setDefaultProperties(env);
         
